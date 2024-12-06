@@ -5,6 +5,11 @@ elastic:
     secretToken: ${ELASTIC_APM_SECRET_TOKEN}
 server.host: "0.0.0.0"
 telemetry.enabled: "true"
+xpack.fleet.fleetServerHosts:
+  - id: fleet-server
+    name: Fleet-Server
+    host_urls: ["https://fleet-server:8220"]
+    is_default: true
 xpack.fleet.packages:
   - name: fleet_server
     version: latest
@@ -18,7 +23,7 @@ xpack.fleet.agentPolicies:
   - name: Fleet-Server-Policy
     id: fleet-server-policy
     namespace: default
-    monitoring_enabled: 
+    monitoring_enabled:
       - logs
       - metrics
     package_policies:
@@ -42,3 +47,12 @@ xpack.fleet.agentPolicies:
             value: 0.0.0.0:8200
           - name: secret_token
             value: ${ELASTIC_APM_SECRET_TOKEN}
+xpack.fleet.outputs:
+  - id: elasticsearch
+    name: Elasticsearch
+    type:  elasticsearch
+    hosts: ["https://es01:9200"]
+    is_default: true
+    config:
+      ssl:
+        certificate_authorities: ["/certs/ca/ca.crt"]

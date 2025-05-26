@@ -47,12 +47,45 @@ xpack.fleet.agentPolicies:
             value: 0.0.0.0:8200
           - name: secret_token
             value: ${ELASTIC_APM_SECRET_TOKEN}
+  - name: Linux-Agent-Policy
+    id: linux-agent-policy
+    namespace: default
+    monitoring_enabled:
+      - logs
+      - metrics
+    package_policies:
+      - name: system-2
+        package:
+          name: system
+  - name: Windows-Agent-Policy
+    id: windows-agent-policy
+    namespace: default
+    data_output_id: windows
+    monitoring_output_id: windows
+    monitoring_enabled:
+      - logs
+      - metrics
+    package_policies:
+      - name: system-3
+        package:
+          name: system
+      - name: windows-1
+        package:
+          name: windows
 xpack.fleet.outputs:
   - id: elasticsearch
     name: Elasticsearch
     type:  elasticsearch
-    hosts: ["https://es01:9200"]
+    hosts: ["https://elasticsearch:9200"]
     is_default: true
     config:
       ssl:
         certificate_authorities: ["/certs/ca/ca.crt"]
+  - id: windows
+    name: Windows
+    type:  elasticsearch
+    hosts: ["https://elasticsearch:9200"]
+    is_default: false
+    config:
+      ssl:
+        certificate_authorities: ["C:\\elastic\\ca.crt"]
